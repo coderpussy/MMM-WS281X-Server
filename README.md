@@ -1,6 +1,6 @@
 # MMM-WS281X-Server
 
-This module is designed to use the rpi-ws2812-server (TCP socket) project from Tom. rpi-ws2812-server uses rpi_ws281x PWM driver code from jgarff.
+This module is designed to use the [RPI-WS2812-Server](https://github.com/jgarff/rpi_ws281x) (TCP socket) project from [Tom](https://github.com/tom-2015). RPI-WS2812-Server uses rpi_ws281x PWM driver code from [jgarff](https://github.com/jgarff/rpi_ws281x).
 Goal was to use ws2812 LED strips on Magic Mirror without the need of root user in NodeJS. Problem is direct memory access which can only be done by a user with privileged rights.
 
 [![Platform](https://img.shields.io/badge/platform-MagicMirror-informational)](https://MagicMirror.builders)
@@ -21,7 +21,7 @@ Currently this module is able to control 'ws281x' stripes. Neopixels or any othe
 
 Needs to be installed (local or remote):
 - [RPI-WS2812-Server](#ws2812server)
-- WS2812 or SK9822 LED Strips
+- WS2811, WS2812, SK6812, SK9822 LED Strips
 
 If the face recognition module by Thierry Nischelwitzer is additionally used:
 - [MMM-Face-Reco-DNN](#facerecodnn)
