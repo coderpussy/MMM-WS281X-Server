@@ -1,0 +1,26 @@
+{
+  "name": "mmm-ws281x-server",
+  "version": "0.0.9",
+  "description": "MagicMirror module for controlling ws281x LED's trough WS2812 Server.",
+  "main": "MMM-WS281X-Server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+      "type": "git",
+      "url": "git+https://github.com/coderpussy/MMM-WS281X-Server"
+  },
+  "keywords": [
+    "magic mirror",
+    "smart mirror",
+    "LED",
+    "module",
+    "rgb",
+    "neopixels"
+  ],
+  "author": "Maja Aurora Pieper",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "latest"
+  }
+}

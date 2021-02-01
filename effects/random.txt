@@ -1,0 +1,8 @@
+setup 1,24,0,0,255,18
+init
+do
+   rotate 1,1,2
+   random 1,0,1,RGB
+   render
+   delay 100
+loop
