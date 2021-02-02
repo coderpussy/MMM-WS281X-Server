@@ -87,11 +87,11 @@ Open the file `~/MagicMirror/config/config.js` and add the following to your mod
 
 ## Module Configuration Options
 
-If server instance is running and listening on TCP socket everything should work out of the box.
-In case of different types of LED strips chip and manually assign effects to strips from API Endpoint you have to set the parameters described on ws2812 servers project page.
+If RPI-WS2812-Server is running and listening on TCP socket everything should work out of the box after installing this module and set up IP of server.
+In case of different types of LED strips chip and manually assign effects to strips from API Endpoint you have to set the config parameters like described on RPI-WS2812-Server project page.
 
 Take a look in this module effects folder to get some ideas how to adjust effects or create new ones by editing the text files.
-It is a kind of ledscript language designed by the WS2812-Server project leader.
+It is a kind of ledscript language designed by the RPI-WS2812-Server project leader.
 
 Config | Description
 --- | ---
