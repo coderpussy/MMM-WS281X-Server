@@ -34,8 +34,8 @@ Please follow the installation instructions on the project maintainer's page.
 
 - https://github.com/tom-2015/rpi-ws2812-server
 
-Also note the section for a system service installation. In case of trouble setting up the system service please change the makefile.
-Just put a # in line 58 in front of the command.
+Also note the section for a system service installation. You need to do this. In case of trouble setting up the system service after make command please change the makefile.
+Just put a # in line 58 in front of the command. Reason is that directly after compiling the server a system service is not created or running. But the makefile instead await a running service. To finish that step successfully you have to work around like i described.
 
 ```sh
 # systemctl stop ws2812svr.service
@@ -90,7 +90,7 @@ Open the file `~/MagicMirror/config/config.js` and add the following to your mod
 If server instance is running and listening on TCP socket everything should work out of the box.
 In case of different types of LED strips chip and manually assign effects to strips from API Endpoint you have to set the parameters described on ws2812 servers project page.
 
-Take a look in this modules effects folder to adjust effects or create new ones by editing the text files.
+Take a look in this module effects folder to get some ideas how to adjust effects or create new ones by editing the text files.
 It is a kind of ledscript language designed by the WS2812-Server project leader.
 
 Config | Description
