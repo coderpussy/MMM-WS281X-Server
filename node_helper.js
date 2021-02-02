@@ -259,8 +259,6 @@ module.exports = NodeHelper.create({
             this.loadLED(this.config.userLoginEffect);
         } else if (notification === 'logout') {
             this.loadLED(this.config.userLogoutEffect);
-        } else if (notification === 'pilights') {
-            this.loadLED(this.config.piLightsSequenceEffect);
         }
     },
     

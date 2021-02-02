@@ -3,15 +3,13 @@ Module.register('MMM-WS281X-Server',{
     defaults: {
         hostname: 'localhost',
         port: 9999,
-        ledOnStart: true,
+        ledOnStart: false,
         ledOnStartEffect: 'start',
         showAlert: false,
         showAlertEffect: 'alert',
         useMMMFaceRecoDNN: false,
         userLoginEffect: 'login',
         userLogoutEffect: 'logout',
-        piLightsSequence: false,
-        piLightsSequenceEffect: 'pilights',
         channel: 1,
         led_count: 24,
         led_type: 0,
@@ -44,13 +42,6 @@ Module.register('MMM-WS281X-Server',{
             // LED effect support for MMMFaceRecoDNN Module:
             if (this.config.useMMMFaceRecoDNN) {
                 this.sendSocketNotification('logout', this.config);
-            }
-        } else if (notification === 'PILIGHTS_SEQUENCE') {
-            // LED effect support for PILIGHTS Module:
-            if (this.config.piLightsSequence) {
-                //var color = payload.replace('_pulse', '');
-                //this.sendSocketNotification('pulse', color);
-                this.sendSocketNotification('pilights', this.config);
             }
         }
     }
