@@ -22,17 +22,24 @@ module.exports = NodeHelper.create({
     
     // This functions sets the color of the whole LED strip
     setStrip: function (color,reset=false) {
+        var initstring = getInit();
+        var ledstring = 'brightness ' + this.config.channel + ',' + this.config.global_brightness + ';fill ' + this.config.channel + ',' + this.rgbToHex(color) + ';render;';
+
+        if (reset) {
+            ledstring += 'kill_thread;reset;';
+        }
+        this.setLED(initstring+ledstring)
+    },
+
+    // Returns a string to set up the server and initialize the LED string
+    getInit: function () {
         var initstring = 'setup ' + this.config.channel + ',' + this.config.led_count + ',' + this.config.led_type + ',' + this.config.invert + ',' + this.config.global_brightness + ',';
         if(!this.config.spi) {
             initstring += this.config.gpionum + ';init;';
         } else {
             initstring += this.config.spi_dev + ',' + this.config.spi_speed + ',' + this.config.alt_spi_pin + ';init;';
         }
-        var ledstring = 'brightness ' + this.config.channel + ',' + this.config.global_brightness + ';fill ' + this.config.channel + ',' + this.rgbToHex(color) + ';render;';
-        if (reset) {
-            ledstring += 'kill_thread;reset;';
-        }
-        this.setLED(initstring+ledstring)
+        return initstring;
     },
 
     // This function initialises the leds string
@@ -61,7 +68,8 @@ module.exports = NodeHelper.create({
     
     // Readfile to string relative to execution path
     loadRenderFile: function (filename) {
-        this.ledString = fs.readFileSync(__dirname + '/effects/' + filename + '.txt', 'utf8');
+        this.ledString = getInit();
+        this.ledString += fs.readFileSync(__dirname + '/effects/' + filename + '.txt', 'utf8');
     },
 
     // This function renders the current pixels on the connected ws281x-server process
