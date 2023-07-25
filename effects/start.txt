@@ -1,12 +1,5 @@
-# channel 1 uses GPIO 1  (broadcom 18)
-# setup/init handled by node_helper
-# setup 1,24,4,0,255,18
-# init
-
-# use white for fade
+# This will fade in at white and remain on.
 fill 1,FFFFFF
-brightness 1,0
-
 fade 1,0,255,10,1
 
-render
+reset

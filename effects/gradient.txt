@@ -1,8 +1,4 @@
-# channel 1 uses GPIO 1  (broadcom 18)
-# setup/init handled by node_helper
-# setup 1,24,4,0,255,18
-# init
-
+# Set color to black
 fill 1,000000
 
 do
