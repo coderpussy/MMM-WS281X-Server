@@ -68,7 +68,7 @@ module.exports = NodeHelper.create({
     
     // Readfile to string relative to execution path
     loadRenderFile: function (filename) {
-        this.ledString = getInit();
+        this.ledString = this.getInit();
         this.ledString += fs.readFileSync(__dirname + '/effects/' + filename + '.txt', 'utf8');
     },
 
@@ -139,7 +139,8 @@ module.exports = NodeHelper.create({
         });
 
         setTimeout(function(){
-            client.end('Bye bye server');
+            // client.end('Bye bye server');
+            client.end();
         },3000);
     },
 
