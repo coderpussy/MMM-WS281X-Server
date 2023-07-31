@@ -1,5 +1,5 @@
 do
-    blink 1,FFFFFF,000000,100,4,1,24
+    blink 1,FFFFFF,000000,100,4,1
     render
     delay 500
 loop 2
