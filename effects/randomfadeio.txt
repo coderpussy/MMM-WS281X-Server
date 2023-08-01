@@ -1,6 +1,6 @@
-# Busted. Do not use.
+# Parameters: channel, duration(sec), # changing LEDs, delay_between_fade, stepSize
 fill 1,FFFFFF
-random_fade_in_out 1,60,3,10,15,1,100
+random_fade_in_out 1,30,10,10,20
 fill 1,000000
 
 render
