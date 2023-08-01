@@ -22,7 +22,7 @@ module.exports = NodeHelper.create({
     
     // This functions sets the color of the whole LED strip
     setStrip: function (color,reset=false) {
-        var initstring = getInit();
+        var initstring = this.getInit();
         var ledstring = 'brightness ' + this.config.channel + ',' + this.config.global_brightness + ';fill ' + this.config.channel + ',' + this.rgbToHex(color) + ';render;';
 
         if (reset) {
