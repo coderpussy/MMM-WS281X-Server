@@ -76,13 +76,14 @@ module.exports = NodeHelper.create({
     // This function renders the current pixels on the connected ws281x-server process
     renderLED: function () {
         // Render string for ledstring
-        console.log(String(this.ledString));
+        console.debug(String(this.ledString));
+        console.debug("Connect to: " + this.config.hostname + ", " + this.config.port);
 
         // Start socket connection
         var client = new net.Socket();
         client.connect({
             port: this.config.port,
-            host: this.config.host
+            host: this.config.hostname
         });
 
         client.setEncoding('utf8');
@@ -255,7 +256,7 @@ module.exports = NodeHelper.create({
         if (notification === 'init') {
             this.config = payload;
             Log.debug("Config: " + this.config);
-            
+
             if(this.config.ledOnStart) {
                 try {
                     console.info('[WS281X-Server] Loading LED\'s on start...');
