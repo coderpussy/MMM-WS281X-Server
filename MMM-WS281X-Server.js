@@ -1,7 +1,7 @@
 Module.register('MMM-WS281X-Server',{
 
     defaults: {
-        hostname: 'localhost',
+        hostname: '127.0.0.1',
         port: 9999,
         ledOnStart: false,
         ledOnStartEffect: 'start',
