@@ -11,6 +11,7 @@ const NodeHelper = require('node_helper');
 const net = require('net');
 const fs = require("fs");
 const bodyParser = require('body-parser');
+const Log = require("logger");
 
 module.exports = NodeHelper.create({
     
@@ -91,16 +92,16 @@ module.exports = NodeHelper.create({
 
         client.on('connect',function(){
             console.log('Client: connection established with ws281x server');
-            /*console.log('---------client details -----------------');
+            console.debug('---------client details -----------------');
 
             var address = client.address();
             var port = address.port;
             var family = address.family;
             var ipaddr = address.address;
             
-            console.log('Client is listening at port: ' + port);
-            console.log('Client IP: ' + ipaddr);
-            console.log('Client is IP4/IP6: ' + family);*/
+            console.debug('Client is listening at port: ' + port);
+            console.debug('Client IP: ' + ipaddr);
+            console.debug('Client is IP4/IP6: ' + family);
         });
 
         client.on('data',function(data){
@@ -253,6 +254,7 @@ module.exports = NodeHelper.create({
     socketNotificationReceived: function (notification, payload) {
         if (notification === 'init') {
             this.config = payload;
+            Log.debug("Config: " + this.config);
             
             if(this.config.ledOnStart) {
                 try {
