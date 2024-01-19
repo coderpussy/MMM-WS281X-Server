@@ -1,12 +1,8 @@
-setup 1,24,0,0,255,18
-init
-
 fill 1,000000
-
 render
+
 chaser 1,20,0000FF,1,24
 
 fill 1,000000
-brightness 1,0
 render
 reset
