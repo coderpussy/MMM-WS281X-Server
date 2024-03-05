@@ -70,7 +70,13 @@ module.exports = NodeHelper.create({
     // Readfile to string relative to execution path
     loadRenderFile: function (filename) {
         this.ledString = this.getInit();
-        this.ledString += fs.readFileSync(__dirname + '/effects/' + filename + '.txt', 'utf8');
+        if (fs.existsSync(__dirname + '/custom/' + filename + ".txt")){
+            console.debug("Located file /custom/" + filename + ".txt");
+            this.ledString += fs.readFileSync(__dirname + '/custom/' + filename + '.txt', 'utf8');
+        } else {
+            this.ledString += fs.readFileSync(__dirname + '/effects/' + filename + '.txt', 'utf8');
+            console.debug("Looking for file " + filename);
+        }
     },
 
     // This function renders the current pixels on the connected ws281x-server process
