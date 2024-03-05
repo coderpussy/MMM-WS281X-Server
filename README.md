@@ -115,6 +115,13 @@ Config | Description
 `spi_speed` | SPI speed in Mhz<br />**Default value:** `20`
 `alt_spi_pin` | Alternative SPI pin<br />**Default value:** `10`
 
+## Custom Animations
+You can write your own commands or animation files and keep them in the `custom` folder. The module
+will search this folder first for whichever animation name you give it. If it doesn't find your file, it
+will look in the `effects` folder. Files must end with the `.txt` suffix to be located.
+
+The `custom` folder is intended for you to overwrite the included animations (start, alert, login, logout)
+without worrying about your changes being replaced in the next update.
 
 ## Trigger from another module
 
