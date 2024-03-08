@@ -15,7 +15,11 @@ No screenshot can be displayed, because this project is executed in the backgrou
 
 ## Requirements
 
-Currently this module is able to control 'ws281x' stripes. Neopixels or any other WS2812 stripe should work fine.
+Currently this module is able to control 'ws281x' stripes. Neopixels or any other WS2812 stripe should work fine. You will need to 
+connect your LED strip to a power source and the data wire will need to be connected to one of the GPIO pins on the RPI board.
+
+The RPi board can only power so many individual LEDs. In my experience, anything more than about 12 LEDs will require attaching
+the LED strip to a power supply rather than the 5V and ground pins on the Pi.
 
 ## Dependencies
 
@@ -23,29 +27,29 @@ Needs to be installed (local or remote):
 - [RPI-WS2812-Server](#ws2812server)
 - WS2811, WS2812, SK6812, SK9822 LED Strips
 
-If the face recognition module by Thierry Nischelwitzer is additionally used:
-- [MMM-Face-Reco-DNN](#facerecodnn)
+This module supports the face recognition module by Thierry Nischelwitzer.
+- [MMM-Face-Reco-DNN](https://github.com/nischi/MMM-Face-Reco-DNN)
 
 ## Installation
 
-### <a name="ws2812server"></a>RPI-WS2812-Server
+### Installing the <a name="ws2812server"></a>RPI-WS2812-Server
 
-Please follow the installation instructions on the project maintainer's page.
+First, you will need to install the RPI-WS2812-Server. Please follow the installation instructions on the project maintainer's page.
 
 - https://github.com/tom-2015/rpi-ws2812-server
 
-Also note the section for a system service installation. You need to do this. In case of trouble setting up the system service after make command please change the makefile.
-Just put a # in line 58 in front of the command. Reason is that directly after compiling the server a system service is not created or running. But the makefile instead await a running service. To finish that step successfully you have to work around like i described.
+Part of the installation instructions includes a section on installing as a service. **You need to do this in order for this module to work.** 
+In case of trouble setting up the system service after make command please change the makefile.
+Just put a # in line 58 in front of the command. Reason is that directly after compiling the server a system service is not created or 
+running. But the makefile instead await a running service. To finish that step successfully you have to work around like I described.
 
 ```sh
 # systemctl stop ws2812svr.service
 ```
 
-### <a name="facerecodnn"></a>MMM-Face-Reco-DNN
 
-- https://github.com/nischi/MMM-Face-Reco-DNN
 
-### Cloning the module
+### Installing the module
 
 ```sh
 cd ~/MagicMirror/modules
@@ -104,6 +108,7 @@ Config | Description
 `useMMMFaceRecoDNN` | Set to true if module is used for LED effect<br />**Default value:** `false`
 `userLoginEffect` | Saved *.txt file<br />**Default value:** `login`
 `userLogoutEffect` | Saved *.txt file<br />**Default value:** `logout`
+`listenNotifications` | Array of notification mappings to animation files. See below.
 `channel` | LED configuration taken from Server project<br />**Default value:** `1`
 `led_count` | How many LEDs are involved<br />**Default value:** `24`
 `led_type` | What type of LED is used. Take a look at server project<br />**Default value:** `0`
@@ -115,26 +120,51 @@ Config | Description
 `spi_speed` | SPI speed in Mhz<br />**Default value:** `20`
 `alt_spi_pin` | Alternative SPI pin<br />**Default value:** `10`
 
+## Custom Animations
+You can write your own commands or animation files and keep them in the `custom` folder. The module
+will search this folder first for whichever animation name you give it. If it doesn't find your file, it
+will look in the `effects` folder. Files must end with the `.txt` suffix to be located.
 
-## Trigger from another module
+The `custom` folder is intended for you to overwrite the included animations (start, alert, login, logout)
+without worrying about your changes being replaced in the next update.
 
-Notifications shown in the default alert module.
-MMM-Face-Reco-DNN module can be used for LED effect running by camera movement recognition on login or logout.
+## Custom Notification Triggers
+The module can be configured to respond to notifications from other modules with the `listenNotifications` config value.
+By passing in an array of notification-to-animation mappings, the module will respond to the notification by running the file.
+For example:
+```
+module: 'MMM-WS281X-Server',
+	config: {
+        listenNotifications: [
+            {notification: 'USER_PRESENCE', text: 'login'},
+            {notification: 'WEATHER_UPDATED', text: 'fade'},
+            {notification: 'NEWS_FEED_UPDATE', text: 'slow_yellow'}
+        ]
+```
+The `notification` value is the name of the triggering notification and the `text` value is the name of the effect file without 
+the '.txt' extension. In the above example, 'slow_yellow' is a custom effect file.
+
+## Face Recognition Triggers
+The alerts broadcast by the [MMM-Face-Reco-DNN](https://github.com/nischi/MMM-Face-Reco-DNN) module are built-in and controlled by the `useMMMFaceRecoDNN` configuration parameter.
 
 ## API Endpoint
+This module exposes an API that will let you activate the LEDs from outside the Magic Mirror. It's a very handy way to test your 
+custom effects or integrate your household digital assistants (Alexa, Google Home, Apple Overlord, etc.). Just open a new tab and 
+put the URL into your address bar.
 
-Possible combinations of API commands
+Some examples of API commands:
 
 ```
-http://yourmagicmirror/WS281X-Server/animation?name=fade
-http://yourmagicmirror/WS281X-Server/resetled
-http://yourmagicmirror/WS281X-Server/set?color=blue
-http://yourmagicmirror/WS281X-Server/set?hex=fff
-http://yourmagicmirror/WS281X-Server/set?hex=ffffff
-http://yourmagicmirror/WS281X-Server/set?hex=ffffffff
-http://yourmagicmirror/WS281X-Server/set?r=25&g=200&b=200
-http://yourmagicmirror/WS281X-Server/set?wheel=20
+http://yourmagicmirror:port/WS281X-Server/animation?name=fade
+http://yourmagicmirror:port/WS281X-Server/resetled
+http://yourmagicmirror:port/WS281X-Server/set?color=blue
+http://yourmagicmirror:port/WS281X-Server/set?hex=fff
+http://yourmagicmirror:port/WS281X-Server/set?hex=ffffff
+http://yourmagicmirror:port/WS281X-Server/set?hex=ffffffff
+http://yourmagicmirror:port/WS281X-Server/set?r=25&g=200&b=200
+http://yourmagicmirror:port/WS281X-Server/set?wheel=20
 ```
+Note: You will have to replace 'yourmagicmirror:port' with the URL of your mirror and the port (usually 8080).
 
 ### CURL Example
 
@@ -150,4 +180,5 @@ Big hugs and thx to:
 - [jgarff](https://github.com/jgarff/rpi_ws281x) for the base rpi_ws281x PWM driver code
 - [Thierry Nischelwitzer](https://github.com/nischi) for the awesome [MMM-Face-Reco-DNN](https://github.com/nischi/MMM-Face-Reco-DNN) module
 - [Paul-Vincent Roll](https://github.com/paviro) for the idea and code parts from his [MMM-Stripes](https://github.com/paviro/MMM-Stripes) module
+- [Brian Hepler](https://github.com/BrianHepler) for the custom notification integration and custom effect files.
 - all guys i have forgotten but used some code fragments from them

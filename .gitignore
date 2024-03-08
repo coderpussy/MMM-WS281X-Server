@@ -1,0 +1,5 @@
+# Ignore files in custom folder #
+/custom/*.txt
+
+# Do not ignore the example / instructional file
+!/custom/custom.txt

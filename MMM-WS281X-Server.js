@@ -19,7 +19,8 @@ Module.register('MMM-WS281X-Server',{
         spi: false,
         spi_dev: '/dev/spidev0.0',
         spi_speed: 20,
-        alt_spi_pin: 10
+        alt_spi_pin: 10,
+        listenNotifications: []
     },
 
     start: function() {
@@ -28,21 +29,37 @@ Module.register('MMM-WS281X-Server',{
     },
 
     notificationReceived: function(notification, payload) {
-        if (notification === 'SHOW_ALERT') {
-            // LED effect on alerts shown in the UI:
-            if (this.config.showAlert) {
-                this.sendSocketNotification('alert', this.config);
-            }
-        } else if (notification === 'USERS_LOGIN') {
-            // LED effect support for MMMFaceRecoDNN Module:
-            if (this.config.useMMMFaceRecoDNN) {
-                this.sendSocketNotification('login', this.config);
-            }
-        } else if (notification === 'USERS_LOGOUT' || notification === 'USERS_LOGOUT_MODULES') {
-            // LED effect support for MMMFaceRecoDNN Module:
-            if (this.config.useMMMFaceRecoDNN) {
-                this.sendSocketNotification('logout', this.config);
+        switch(notification) {
+            case 'SHOW_ALERT':
+                // LED effect on alerts shown in the UI:
+                if (this.config.showAlert) {
+                    this.sendSocketNotification('alert', this.config);
+                }
+            break;
+
+            case 'USERS_LOGIN':
+                // LED effect support for MMMFaceRecoDNN Module:
+                if (this.config.useMMMFaceRecoDNN) {
+                    this.sendSocketNotification('login', this.config);
+                }
+            break;
+
+            case 'USERS_LOGOUT':
+            case 'USERS_LOGOUT_MODULES':
+                // LED effect support for MMMFaceRecoDNN Module:
+                if (this.config.useMMMFaceRecoDNN) {
+                    this.sendSocketNotification('logout', this.config);
+                }
+            break;
+        } // end switch
+
+        for (const notif of this.config.listenNotifications) {
+            notifName = notif.notification;
+            if (notification === notifName) {
+                text = notif.text;
+                this.sendSocketNotification('command', text);
             }
         }
+
     }
 });

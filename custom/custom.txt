@@ -1,0 +1,10 @@
+# This example animation file is to give you ideas on creating your own.
+# Your custom files in this folder will not be overwritten by Git updates
+# All custom files must be text files, end in '.txt'
+# Any command to play an animation will check this folder first, then the /example folder
+
+# This will fade in at some odd color and remain on.
+fill 1,FF77FF
+fade 1,0,255,10,1
+
+reset
