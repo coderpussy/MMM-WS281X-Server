@@ -16,7 +16,7 @@ const Log = require("logger");
 module.exports = NodeHelper.create({
     
     start: function () {
-        console.log('[WS281X-Server] Starting node_helper');
+        console.log(this.name + ' Starting node_helper');
         // Start API Endpoints
         this.webServer()
     },
@@ -70,7 +70,13 @@ module.exports = NodeHelper.create({
     // Readfile to string relative to execution path
     loadRenderFile: function (filename) {
         this.ledString = this.getInit();
-        this.ledString += fs.readFileSync(__dirname + '/effects/' + filename + '.txt', 'utf8');
+        if (fs.existsSync(__dirname + '/custom/' + filename + ".txt")){
+            console.debug("Located file /custom/" + filename + ".txt");
+            this.ledString += fs.readFileSync(__dirname + '/custom/' + filename + '.txt', 'utf8');
+        } else {
+            this.ledString += fs.readFileSync(__dirname + '/effects/' + filename + '.txt', 'utf8');
+            console.debug("Looking for file " + filename);
+        }
     },
 
     // This function renders the current pixels on the connected ws281x-server process
@@ -253,9 +259,10 @@ module.exports = NodeHelper.create({
 
     // Messages from the UI
     socketNotificationReceived: function (notification, payload) {
-        if (notification === 'init') {
+        switch (notification) {
+        case 'init':
             this.config = payload;
-            Log.debug("Config: " + this.config);
+            Log.debug(this.name + " Config: " + JSON.stringify(this.config));
 
             if(this.config.ledOnStart) {
                 try {
@@ -265,13 +272,22 @@ module.exports = NodeHelper.create({
                     console.error('[WS281X-Server] Unable to load LED\'s on start!', err.message);
                 }
             }
-        } else if (notification === 'alert') {
+            break;
+        case 'alert':
             this.loadLED(this.config.showAlertEffect);
-        } else if (notification === 'login') {
+            break;
+        case 'login':
             this.loadLED(this.config.userLoginEffect);
-        } else if (notification === 'logout') {
+            break;
+        case 'logout':
             this.loadLED(this.config.userLogoutEffect);
-        }
+            break;
+        case 'command':
+            Log.debug("Command notification detected. " + notification + ": " + payload);
+            this.loadLED(payload);
+            break;
+        }// end switch
+
     },
     
     // API Endpoints
